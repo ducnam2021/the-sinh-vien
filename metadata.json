@@ -1,0 +1,5 @@
+{
+  "name": "Tạo thẻ sinh viên",
+  "description": "A React application to generate and customize student ID cards for Saudi Arabian universities. Features include editable fields, photo uploads, background selection, and image download.",
+  "requestFramePermissions": []
+}
