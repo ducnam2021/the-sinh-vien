@@ -1,3 +1,4 @@
+
 import { GoogleGenAI } from '@google/genai';
 import type { Student, University, CountryCode } from '../types';
 import { COUNTRY_DATA } from '../constants/data';
@@ -40,6 +41,7 @@ export const generateRandomPhotoUrl = async (country: CountryCode, gender: 'male
     };
 
     try {
+        // FIX: Use process.env.API_KEY as per the coding guidelines for API key management.
         const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
         const determinedGender = gender === 'random' ? (Math.random() > 0.5 ? 'male' : 'female') : gender;
         const nationality = COUNTRY_DATA[country].nationality;
