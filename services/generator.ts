@@ -41,8 +41,14 @@ export const generateRandomPhotoUrl = async (country: CountryCode, gender: 'male
     };
 
     try {
-        // FIX: Use process.env.API_KEY as per the coding guidelines for API key management.
-        const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+        const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+
+        if (!apiKey) {
+            console.warn('Missing Gemini API key. Falling back to placeholder photo URLs.');
+            return fallbackUrl();
+        }
+
+        const ai = new GoogleGenAI({ apiKey });
         const determinedGender = gender === 'random' ? (Math.random() > 0.5 ? 'male' : 'female') : gender;
         const nationality = COUNTRY_DATA[country].nationality;
         const prompt = `A professional studio portrait of a young ${determinedGender} ${nationality} university student. They are looking at the camera with a neutral to friendly expression. Plain, out-of-focus background. High quality photograph.`;
