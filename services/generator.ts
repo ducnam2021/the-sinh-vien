@@ -2,6 +2,7 @@
 import { GoogleGenAI } from '@google/genai';
 import type { Student, University, CountryCode } from '../types';
 import { COUNTRY_DATA } from '../constants/data';
+import { DEFAULT_GEMINI_API_KEY, GEMINI_IMAGE_CONFIG, GEMINI_MODEL_ID } from '../constants/config';
 
 function getRandomElement<T,>(arr: T[]): T {
   return arr[Math.floor(Math.random() * arr.length)];
@@ -41,7 +42,7 @@ export const generateRandomPhotoUrl = async (country: CountryCode, gender: 'male
     };
 
     try {
-        const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+        const apiKey = import.meta.env.VITE_GEMINI_API_KEY ?? DEFAULT_GEMINI_API_KEY;
 
         if (!apiKey) {
             console.warn('Missing Gemini API key. Falling back to placeholder photo URLs.');
@@ -54,13 +55,9 @@ export const generateRandomPhotoUrl = async (country: CountryCode, gender: 'male
         const prompt = `A professional studio portrait of a young ${determinedGender} ${nationality} university student. They are looking at the camera with a neutral to friendly expression. Plain, out-of-focus background. High quality photograph.`;
 
         const response = await ai.models.generateImages({
-            model: 'imagen-4.0-generate-001',
+            model: GEMINI_MODEL_ID,
             prompt: prompt,
-            config: {
-                numberOfImages: 1,
-                outputMimeType: 'image/jpeg',
-                aspectRatio: '3:4',
-            },
+            config: GEMINI_IMAGE_CONFIG,
         });
 
         const base64ImageBytes: string = response.generatedImages[0].image.imageBytes;
